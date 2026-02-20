@@ -2,8 +2,15 @@
     "info": {
         "_postman_id": "9d96888c-6e69-4228-9844-315187123456",
         "name": "Movie Reservation System",
+        "description": "Complete API collection for the Movie Reservation System microservices (Auth, User, Movie, Reservation) via the API Gateway on port 5000.",
         "schema": "https://schema.getpostman.com/json/collection/v2.1.0/collection.json"
     },
+    "variable": [
+        {
+            "key": "base_url",
+            "value": "http://localhost:5000"
+        }
+    ],
     "item": [
         {
             "name": "Auth",
@@ -23,12 +30,10 @@
                             "raw": "{\n    \"username\": \"admin\",\n    \"email\": \"admin@cinema.com\",\n    \"password\": \"admin123\",\n    \"role\": \"ADMIN\"\n}"
                         },
                         "url": {
-                            "raw": "http://localhost:5000/api/auth/register",
-                            "protocol": "http",
+                            "raw": "{{base_url}}/api/auth/register",
                             "host": [
-                                "localhost"
+                                "{{base_url}}"
                             ],
-                            "port": "5000",
                             "path": [
                                 "api",
                                 "auth",
@@ -65,12 +70,10 @@
                             "raw": "{\n    \"username\": \"admin\",\n    \"password\": \"admin123\"\n}"
                         },
                         "url": {
-                            "raw": "http://localhost:5000/api/auth/login",
-                            "protocol": "http",
+                            "raw": "{{base_url}}/api/auth/login",
                             "host": [
-                                "localhost"
+                                "{{base_url}}"
                             ],
-                            "port": "5000",
                             "path": [
                                 "api",
                                 "auth",
@@ -95,12 +98,10 @@
                             "raw": "{\n    \"username\": \"john\",\n    \"email\": \"john@test.com\",\n    \"password\": \"pass123\"\n}"
                         },
                         "url": {
-                            "raw": "http://localhost:5000/api/auth/register",
-                            "protocol": "http",
+                            "raw": "{{base_url}}/api/auth/register",
                             "host": [
-                                "localhost"
+                                "{{base_url}}"
                             ],
-                            "port": "5000",
                             "path": [
                                 "api",
                                 "auth",
@@ -137,12 +138,10 @@
                             "raw": "{\n    \"username\": \"john\",\n    \"password\": \"pass123\"\n}"
                         },
                         "url": {
-                            "raw": "http://localhost:5000/api/auth/login",
-                            "protocol": "http",
+                            "raw": "{{base_url}}/api/auth/login",
                             "host": [
-                                "localhost"
+                                "{{base_url}}"
                             ],
-                            "port": "5000",
                             "path": [
                                 "api",
                                 "auth",
@@ -151,14 +150,192 @@
                         }
                     },
                     "response": []
+                },
+                {
+                    "name": "Verify Token",
+                    "request": {
+                        "auth": {
+                            "type": "bearer",
+                            "bearer": [
+                                {
+                                    "key": "token",
+                                    "value": "{{user_token}}",
+                                    "type": "string"
+                                }
+                            ]
+                        },
+                        "method": "POST",
+                        "header": [],
+                        "url": {
+                            "raw": "{{base_url}}/api/auth/verify",
+                            "host": [
+                                "{{base_url}}"
+                            ],
+                            "path": [
+                                "api",
+                                "auth",
+                                "verify"
+                            ]
+                        }
+                    },
+                    "response": []
+                },
+                {
+                    "name": "Google OAuth Login (Browser)",
+                    "request": {
+                        "method": "GET",
+                        "header": [],
+                        "url": {
+                            "raw": "{{base_url}}/api/auth/login/google",
+                            "host": [
+                                "{{base_url}}"
+                            ],
+                            "path": [
+                                "api",
+                                "auth",
+                                "login",
+                                "google"
+                            ]
+                        },
+                        "description": "Opens the Google OAuth login flow. This should be opened in a browser, not called directly from Postman."
+                    },
+                    "response": []
                 }
             ]
         },
         {
-            "name": "Movies & Theaters (Admin)",
+            "name": "User Profile",
             "item": [
                 {
-                    "name": "Create Genre",
+                    "name": "Get My Profile",
+                    "request": {
+                        "auth": {
+                            "type": "bearer",
+                            "bearer": [
+                                {
+                                    "key": "token",
+                                    "value": "{{user_token}}",
+                                    "type": "string"
+                                }
+                            ]
+                        },
+                        "method": "GET",
+                        "header": [],
+                        "url": {
+                            "raw": "{{base_url}}/api/users/me",
+                            "host": [
+                                "{{base_url}}"
+                            ],
+                            "path": [
+                                "api",
+                                "users",
+                                "me"
+                            ]
+                        }
+                    },
+                    "response": []
+                },
+                {
+                    "name": "Create / Update My Profile",
+                    "request": {
+                        "auth": {
+                            "type": "bearer",
+                            "bearer": [
+                                {
+                                    "key": "token",
+                                    "value": "{{user_token}}",
+                                    "type": "string"
+                                }
+                            ]
+                        },
+                        "method": "POST",
+                        "header": [
+                            {
+                                "key": "Content-Type",
+                                "value": "application/json"
+                            }
+                        ],
+                        "body": {
+                            "mode": "raw",
+                            "raw": "{\n    \"full_name\": \"John Doe\",\n    \"phone_number\": \"+1234567890\"\n}"
+                        },
+                        "url": {
+                            "raw": "{{base_url}}/api/users/me",
+                            "host": [
+                                "{{base_url}}"
+                            ],
+                            "path": [
+                                "api",
+                                "users",
+                                "me"
+                            ]
+                        }
+                    },
+                    "response": []
+                },
+                {
+                    "name": "Update My Profile (PUT)",
+                    "request": {
+                        "auth": {
+                            "type": "bearer",
+                            "bearer": [
+                                {
+                                    "key": "token",
+                                    "value": "{{user_token}}",
+                                    "type": "string"
+                                }
+                            ]
+                        },
+                        "method": "PUT",
+                        "header": [
+                            {
+                                "key": "Content-Type",
+                                "value": "application/json"
+                            }
+                        ],
+                        "body": {
+                            "mode": "raw",
+                            "raw": "{\n    \"full_name\": \"John Updated\",\n    \"phone_number\": \"+0987654321\"\n}"
+                        },
+                        "url": {
+                            "raw": "{{base_url}}/api/users/me",
+                            "host": [
+                                "{{base_url}}"
+                            ],
+                            "path": [
+                                "api",
+                                "users",
+                                "me"
+                            ]
+                        }
+                    },
+                    "response": []
+                }
+            ]
+        },
+        {
+            "name": "Genres",
+            "item": [
+                {
+                    "name": "Get All Genres",
+                    "request": {
+                        "method": "GET",
+                        "header": [],
+                        "url": {
+                            "raw": "{{base_url}}/api/genres",
+                            "host": [
+                                "{{base_url}}"
+                            ],
+                            "path": [
+                                "api",
+                                "genres"
+                            ]
+                        }
+                    },
+                    "response": []
+                },
+                {
+                    "name": "Create Genre (Admin)",
                     "request": {
                         "auth": {
                             "type": "bearer",
@@ -182,12 +359,10 @@
                             "raw": "{\n    \"name\": \"Sci-Fi\"\n}"
                         },
                         "url": {
-                            "raw": "http://localhost:5000/api/genres",
-                            "protocol": "http",
+                            "raw": "{{base_url}}/api/genres",
                             "host": [
-                                "localhost"
+                                "{{base_url}}"
                             ],
-                            "port": "5000",
                             "path": [
                                 "api",
                                 "genres"
@@ -195,9 +370,51 @@
                         }
                     },
                     "response": []
+                }
+            ]
+        },
+        {
+            "name": "Movies",
+            "item": [
+                {
+                    "name": "Get All Movies",
+                    "request": {
+                        "method": "GET",
+                        "header": [],
+                        "url": {
+                            "raw": "{{base_url}}/api/movies",
+                            "host": [
+                                "{{base_url}}"
+                            ],
+                            "path": [
+                                "api",
+                                "movies"
+                            ]
+                        }
+                    },
+                    "response": []
                 },
                 {
-                    "name": "Create Movie",
+                    "name": "Get Movie by ID",
+                    "request": {
+                        "method": "GET",
+                        "header": [],
+                        "url": {
+                            "raw": "{{base_url}}/api/movies/1",
+                            "host": [
+                                "{{base_url}}"
+                            ],
+                            "path": [
+                                "api",
+                                "movies",
+                                "1"
+                            ]
+                        }
+                    },
+                    "response": []
+                },
+                {
+                    "name": "Create Movie (Admin)",
                     "request": {
                         "auth": {
                             "type": "bearer",
@@ -221,12 +438,10 @@
                             "raw": "{\n    \"title\": \"Inception\",\n    \"description\": \"Dream within a dream.\",\n    \"poster_url\": \"http://example.com/poster.jpg\",\n    \"genre_ids\": [1]\n}"
                         },
                         "url": {
-                            "raw": "http://localhost:5000/api/movies",
-                            "protocol": "http",
+                            "raw": "{{base_url}}/api/movies",
                             "host": [
-                                "localhost"
+                                "{{base_url}}"
                             ],
-                            "port": "5000",
                             "path": [
                                 "api",
                                 "movies"
@@ -236,7 +451,97 @@
                     "response": []
                 },
                 {
-                    "name": "Create Theater",
+                    "name": "Update Movie (Admin)",
+                    "request": {
+                        "auth": {
+                            "type": "bearer",
+                            "bearer": [
+                                {
+                                    "key": "token",
+                                    "value": "{{admin_token}}",
+                                    "type": "string"
+                                }
+                            ]
+                        },
+                        "method": "PUT",
+                        "header": [
+                            {
+                                "key": "Content-Type",
+                                "value": "application/json"
+                            }
+                        ],
+                        "body": {
+                            "mode": "raw",
+                            "raw": "{\n    \"title\": \"Inception (Updated)\",\n    \"description\": \"A mind-bending thriller about dream infiltration.\",\n    \"poster_url\": \"http://example.com/poster_v2.jpg\",\n    \"genre_ids\": [1]\n}"
+                        },
+                        "url": {
+                            "raw": "{{base_url}}/api/movies/1",
+                            "host": [
+                                "{{base_url}}"
+                            ],
+                            "path": [
+                                "api",
+                                "movies",
+                                "1"
+                            ]
+                        }
+                    },
+                    "response": []
+                },
+                {
+                    "name": "Delete Movie (Admin)",
+                    "request": {
+                        "auth": {
+                            "type": "bearer",
+                            "bearer": [
+                                {
+                                    "key": "token",
+                                    "value": "{{admin_token}}",
+                                    "type": "string"
+                                }
+                            ]
+                        },
+                        "method": "DELETE",
+                        "header": [],
+                        "url": {
+                            "raw": "{{base_url}}/api/movies/1",
+                            "host": [
+                                "{{base_url}}"
+                            ],
+                            "path": [
+                                "api",
+                                "movies",
+                                "1"
+                            ]
+                        }
+                    },
+                    "response": []
+                }
+            ]
+        },
+        {
+            "name": "Theaters",
+            "item": [
+                {
+                    "name": "Get All Theaters",
+                    "request": {
+                        "method": "GET",
+                        "header": [],
+                        "url": {
+                            "raw": "{{base_url}}/api/theaters",
+                            "host": [
+                                "{{base_url}}"
+                            ],
+                            "path": [
+                                "api",
+                                "theaters"
+                            ]
+                        }
+                    },
+                    "response": []
+                },
+                {
+                    "name": "Create Theater (Admin)",
                     "request": {
                         "auth": {
                             "type": "bearer",
@@ -260,12 +565,10 @@
                             "raw": "{\n    \"name\": \"Grand Theater\",\n    \"total_seats\": 30,\n    \"rows\": [\"A\", \"B\", \"C\"],\n    \"seats_per_row\": 10\n}"
                         },
                         "url": {
-                            "raw": "http://localhost:5000/api/theaters",
-                            "protocol": "http",
+                            "raw": "{{base_url}}/api/theaters",
                             "host": [
-                                "localhost"
+                                "{{base_url}}"
                             ],
-                            "port": "5000",
                             "path": [
                                 "api",
                                 "theaters"
@@ -273,9 +576,76 @@
                         }
                     },
                     "response": []
+                }
+            ]
+        },
+        {
+            "name": "Showtimes",
+            "item": [
+                {
+                    "name": "Get All Showtimes",
+                    "request": {
+                        "method": "GET",
+                        "header": [],
+                        "url": {
+                            "raw": "{{base_url}}/api/showtimes",
+                            "host": [
+                                "{{base_url}}"
+                            ],
+                            "path": [
+                                "api",
+                                "showtimes"
+                            ]
+                        }
+                    },
+                    "response": []
                 },
                 {
-                    "name": "Create Showtime",
+                    "name": "Get Showtimes by Movie",
+                    "request": {
+                        "method": "GET",
+                        "header": [],
+                        "url": {
+                            "raw": "{{base_url}}/api/showtimes?movie_id=1",
+                            "host": [
+                                "{{base_url}}"
+                            ],
+                            "path": [
+                                "api",
+                                "showtimes"
+                            ],
+                            "query": [
+                                {
+                                    "key": "movie_id",
+                                    "value": "1"
+                                }
+                            ]
+                        }
+                    },
+                    "response": []
+                },
+                {
+                    "name": "Get Showtime Seats",
+                    "request": {
+                        "method": "GET",
+                        "header": [],
+                        "url": {
+                            "raw": "{{base_url}}/api/showtimes/1/seats",
+                            "host": [
+                                "{{base_url}}"
+                            ],
+                            "path": [
+                                "api",
+                                "showtimes",
+                                "1",
+                                "seats"
+                            ]
+                        }
+                    },
+                    "response": []
+                },
+                {
+                    "name": "Create Showtime (Admin)",
                     "request": {
                         "auth": {
                             "type": "bearer",
@@ -299,12 +669,10 @@
                             "raw": "{\n    \"movie_id\": 1,\n    \"theater_id\": 1,\n    \"start_time\": \"2026-03-01 20:00:00\",\n    \"price\": 12.50\n}"
                         },
                         "url": {
-                            "raw": "http://localhost:5000/api/showtimes",
-                            "protocol": "http",
+                            "raw": "{{base_url}}/api/showtimes",
                             "host": [
-                                "localhost"
+                                "{{base_url}}"
                             ],
-                            "port": "5000",
                             "path": [
                                 "api",
                                 "showtimes"
@@ -312,27 +680,31 @@
                         }
                     },
                     "response": []
-                }
-            ]
-        },
-        {
-            "name": "Public",
-            "item": [
+                },
                 {
-                    "name": "Get All Movies",
+                    "name": "Delete Showtime (Admin)",
                     "request": {
-                        "method": "GET",
+                        "auth": {
+                            "type": "bearer",
+                            "bearer": [
+                                {
+                                    "key": "token",
+                                    "value": "{{admin_token}}",
+                                    "type": "string"
+                                }
+                            ]
+                        },
+                        "method": "DELETE",
                         "header": [],
                         "url": {
-                            "raw": "http://localhost:5000/api/movies",
-                            "protocol": "http",
+                            "raw": "{{base_url}}/api/showtimes/1",
                             "host": [
-                                "localhost"
+                                "{{base_url}}"
                             ],
-                            "port": "5000",
                             "path": [
                                 "api",
-                                "movies"
+                                "showtimes",
+                                "1"
                             ]
                         }
                     },
@@ -368,38 +740,13 @@
                             "raw": "{\n    \"showtime_id\": 1,\n    \"seat_ids\": [1, 2, 3]\n}"
                         },
                         "url": {
-                            "raw": "http://localhost:5000/api/reservations",
-                            "protocol": "http",
+                            "raw": "{{base_url}}/api/reservations",
                             "host": [
-                                "localhost"
+                                "{{base_url}}"
                             ],
-                            "port": "5000",
                             "path": [
                                 "api",
                                 "reservations"
-                            ]
-                        }
-                    },
-                    "response": []
-                },
-                {
-                    "name": "Get Booked Seats",
-                    "request": {
-                        "method": "GET",
-                        "header": [],
-                        "url": {
-                            "raw": "http://localhost:5000/api/reservations/showtime/1/booked-seats",
-                            "protocol": "http",
-                            "host": [
-                                "localhost"
-                            ],
-                            "port": "5000",
-                            "path": [
-                                "api",
-                                "reservations",
-                                "showtime",
-                                "1",
-                                "booked-seats"
                             ]
                         }
                     },
@@ -421,15 +768,145 @@
                         "method": "GET",
                         "header": [],
                         "url": {
-                            "raw": "http://localhost:5000/api/reservations",
-                            "protocol": "http",
+                            "raw": "{{base_url}}/api/reservations",
                             "host": [
-                                "localhost"
+                                "{{base_url}}"
                             ],
-                            "port": "5000",
                             "path": [
                                 "api",
                                 "reservations"
+                            ]
+                        }
+                    },
+                    "response": []
+                },
+                {
+                    "name": "Cancel Reservation",
+                    "request": {
+                        "auth": {
+                            "type": "bearer",
+                            "bearer": [
+                                {
+                                    "key": "token",
+                                    "value": "{{user_token}}",
+                                    "type": "string"
+                                }
+                            ]
+                        },
+                        "method": "POST",
+                        "header": [],
+                        "url": {
+                            "raw": "{{base_url}}/api/reservations/1/cancel",
+                            "host": [
+                                "{{base_url}}"
+                            ],
+                            "path": [
+                                "api",
+                                "reservations",
+                                "1",
+                                "cancel"
+                            ]
+                        }
+                    },
+                    "response": []
+                },
+                {
+                    "name": "Get Booked Seats for Showtime",
+                    "request": {
+                        "method": "GET",
+                        "header": [],
+                        "url": {
+                            "raw": "{{base_url}}/api/reservations/showtime/1/booked-seats",
+                            "host": [
+                                "{{base_url}}"
+                            ],
+                            "path": [
+                                "api",
+                                "reservations",
+                                "showtime",
+                                "1",
+                                "booked-seats"
+                            ]
+                        }
+                    },
+                    "response": []
+                },
+                {
+                    "name": "Get All Reservations (Admin)",
+                    "request": {
+                        "auth": {
+                            "type": "bearer",
+                            "bearer": [
+                                {
+                                    "key": "token",
+                                    "value": "{{admin_token}}",
+                                    "type": "string"
+                                }
+                            ]
+                        },
+                        "method": "GET",
+                        "header": [],
+                        "url": {
+                            "raw": "{{base_url}}/api/reservations/all",
+                            "host": [
+                                "{{base_url}}"
+                            ],
+                            "path": [
+                                "api",
+                                "reservations",
+                                "all"
+                            ]
+                        }
+                    },
+                    "response": []
+                },
+                {
+                    "name": "Reservation Stats (Admin)",
+                    "request": {
+                        "auth": {
+                            "type": "bearer",
+                            "bearer": [
+                                {
+                                    "key": "token",
+                                    "value": "{{admin_token}}",
+                                    "type": "string"
+                                }
+                            ]
+                        },
+                        "method": "GET",
+                        "header": [],
+                        "url": {
+                            "raw": "{{base_url}}/api/reservations/stats",
+                            "host": [
+                                "{{base_url}}"
+                            ],
+                            "path": [
+                                "api",
+                                "reservations",
+                                "stats"
+                            ]
+                        }
+                    },
+                    "response": []
+                }
+            ]
+        },
+        {
+            "name": "Health Check",
+            "item": [
+                {
+                    "name": "API Gateway Health",
+                    "request": {
+                        "method": "GET",
+                        "header": [],
+                        "url": {
+                            "raw": "{{base_url}}/api/health",
+                            "host": [
+                                "{{base_url}}"
+                            ],
+                            "path": [
+                                "api",
+                                "health"
                             ]
                         }
                     },
