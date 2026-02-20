@@ -1,0 +1,441 @@
+{
+    "info": {
+        "_postman_id": "9d96888c-6e69-4228-9844-315187123456",
+        "name": "Movie Reservation System",
+        "schema": "https://schema.getpostman.com/json/collection/v2.1.0/collection.json"
+    },
+    "item": [
+        {
+            "name": "Auth",
+            "item": [
+                {
+                    "name": "Register Admin",
+                    "request": {
+                        "method": "POST",
+                        "header": [
+                            {
+                                "key": "Content-Type",
+                                "value": "application/json"
+                            }
+                        ],
+                        "body": {
+                            "mode": "raw",
+                            "raw": "{\n    \"username\": \"admin\",\n    \"email\": \"admin@cinema.com\",\n    \"password\": \"admin123\",\n    \"role\": \"ADMIN\"\n}"
+                        },
+                        "url": {
+                            "raw": "http://localhost:5000/api/auth/register",
+                            "protocol": "http",
+                            "host": [
+                                "localhost"
+                            ],
+                            "port": "5000",
+                            "path": [
+                                "api",
+                                "auth",
+                                "register"
+                            ]
+                        }
+                    },
+                    "response": []
+                },
+                {
+                    "name": "Login Admin",
+                    "event": [
+                        {
+                            "listen": "test",
+                            "script": {
+                                "exec": [
+                                    "var jsonData = pm.response.json();",
+                                    "pm.environment.set(\"admin_token\", jsonData.access_token);"
+                                ],
+                                "type": "text/javascript"
+                            }
+                        }
+                    ],
+                    "request": {
+                        "method": "POST",
+                        "header": [
+                            {
+                                "key": "Content-Type",
+                                "value": "application/json"
+                            }
+                        ],
+                        "body": {
+                            "mode": "raw",
+                            "raw": "{\n    \"username\": \"admin\",\n    \"password\": \"admin123\"\n}"
+                        },
+                        "url": {
+                            "raw": "http://localhost:5000/api/auth/login",
+                            "protocol": "http",
+                            "host": [
+                                "localhost"
+                            ],
+                            "port": "5000",
+                            "path": [
+                                "api",
+                                "auth",
+                                "login"
+                            ]
+                        }
+                    },
+                    "response": []
+                },
+                {
+                    "name": "Register User",
+                    "request": {
+                        "method": "POST",
+                        "header": [
+                            {
+                                "key": "Content-Type",
+                                "value": "application/json"
+                            }
+                        ],
+                        "body": {
+                            "mode": "raw",
+                            "raw": "{\n    \"username\": \"john\",\n    \"email\": \"john@test.com\",\n    \"password\": \"pass123\"\n}"
+                        },
+                        "url": {
+                            "raw": "http://localhost:5000/api/auth/register",
+                            "protocol": "http",
+                            "host": [
+                                "localhost"
+                            ],
+                            "port": "5000",
+                            "path": [
+                                "api",
+                                "auth",
+                                "register"
+                            ]
+                        }
+                    },
+                    "response": []
+                },
+                {
+                    "name": "Login User",
+                    "event": [
+                        {
+                            "listen": "test",
+                            "script": {
+                                "exec": [
+                                    "var jsonData = pm.response.json();",
+                                    "pm.environment.set(\"user_token\", jsonData.access_token);"
+                                ],
+                                "type": "text/javascript"
+                            }
+                        }
+                    ],
+                    "request": {
+                        "method": "POST",
+                        "header": [
+                            {
+                                "key": "Content-Type",
+                                "value": "application/json"
+                            }
+                        ],
+                        "body": {
+                            "mode": "raw",
+                            "raw": "{\n    \"username\": \"john\",\n    \"password\": \"pass123\"\n}"
+                        },
+                        "url": {
+                            "raw": "http://localhost:5000/api/auth/login",
+                            "protocol": "http",
+                            "host": [
+                                "localhost"
+                            ],
+                            "port": "5000",
+                            "path": [
+                                "api",
+                                "auth",
+                                "login"
+                            ]
+                        }
+                    },
+                    "response": []
+                }
+            ]
+        },
+        {
+            "name": "Movies & Theaters (Admin)",
+            "item": [
+                {
+                    "name": "Create Genre",
+                    "request": {
+                        "auth": {
+                            "type": "bearer",
+                            "bearer": [
+                                {
+                                    "key": "token",
+                                    "value": "{{admin_token}}",
+                                    "type": "string"
+                                }
+                            ]
+                        },
+                        "method": "POST",
+                        "header": [
+                            {
+                                "key": "Content-Type",
+                                "value": "application/json"
+                            }
+                        ],
+                        "body": {
+                            "mode": "raw",
+                            "raw": "{\n    \"name\": \"Sci-Fi\"\n}"
+                        },
+                        "url": {
+                            "raw": "http://localhost:5000/api/genres",
+                            "protocol": "http",
+                            "host": [
+                                "localhost"
+                            ],
+                            "port": "5000",
+                            "path": [
+                                "api",
+                                "genres"
+                            ]
+                        }
+                    },
+                    "response": []
+                },
+                {
+                    "name": "Create Movie",
+                    "request": {
+                        "auth": {
+                            "type": "bearer",
+                            "bearer": [
+                                {
+                                    "key": "token",
+                                    "value": "{{admin_token}}",
+                                    "type": "string"
+                                }
+                            ]
+                        },
+                        "method": "POST",
+                        "header": [
+                            {
+                                "key": "Content-Type",
+                                "value": "application/json"
+                            }
+                        ],
+                        "body": {
+                            "mode": "raw",
+                            "raw": "{\n    \"title\": \"Inception\",\n    \"description\": \"Dream within a dream.\",\n    \"poster_url\": \"http://example.com/poster.jpg\",\n    \"genre_ids\": [1]\n}"
+                        },
+                        "url": {
+                            "raw": "http://localhost:5000/api/movies",
+                            "protocol": "http",
+                            "host": [
+                                "localhost"
+                            ],
+                            "port": "5000",
+                            "path": [
+                                "api",
+                                "movies"
+                            ]
+                        }
+                    },
+                    "response": []
+                },
+                {
+                    "name": "Create Theater",
+                    "request": {
+                        "auth": {
+                            "type": "bearer",
+                            "bearer": [
+                                {
+                                    "key": "token",
+                                    "value": "{{admin_token}}",
+                                    "type": "string"
+                                }
+                            ]
+                        },
+                        "method": "POST",
+                        "header": [
+                            {
+                                "key": "Content-Type",
+                                "value": "application/json"
+                            }
+                        ],
+                        "body": {
+                            "mode": "raw",
+                            "raw": "{\n    \"name\": \"Grand Theater\",\n    \"total_seats\": 30,\n    \"rows\": [\"A\", \"B\", \"C\"],\n    \"seats_per_row\": 10\n}"
+                        },
+                        "url": {
+                            "raw": "http://localhost:5000/api/theaters",
+                            "protocol": "http",
+                            "host": [
+                                "localhost"
+                            ],
+                            "port": "5000",
+                            "path": [
+                                "api",
+                                "theaters"
+                            ]
+                        }
+                    },
+                    "response": []
+                },
+                {
+                    "name": "Create Showtime",
+                    "request": {
+                        "auth": {
+                            "type": "bearer",
+                            "bearer": [
+                                {
+                                    "key": "token",
+                                    "value": "{{admin_token}}",
+                                    "type": "string"
+                                }
+                            ]
+                        },
+                        "method": "POST",
+                        "header": [
+                            {
+                                "key": "Content-Type",
+                                "value": "application/json"
+                            }
+                        ],
+                        "body": {
+                            "mode": "raw",
+                            "raw": "{\n    \"movie_id\": 1,\n    \"theater_id\": 1,\n    \"start_time\": \"2026-03-01 20:00:00\",\n    \"price\": 12.50\n}"
+                        },
+                        "url": {
+                            "raw": "http://localhost:5000/api/showtimes",
+                            "protocol": "http",
+                            "host": [
+                                "localhost"
+                            ],
+                            "port": "5000",
+                            "path": [
+                                "api",
+                                "showtimes"
+                            ]
+                        }
+                    },
+                    "response": []
+                }
+            ]
+        },
+        {
+            "name": "Public",
+            "item": [
+                {
+                    "name": "Get All Movies",
+                    "request": {
+                        "method": "GET",
+                        "header": [],
+                        "url": {
+                            "raw": "http://localhost:5000/api/movies",
+                            "protocol": "http",
+                            "host": [
+                                "localhost"
+                            ],
+                            "port": "5000",
+                            "path": [
+                                "api",
+                                "movies"
+                            ]
+                        }
+                    },
+                    "response": []
+                }
+            ]
+        },
+        {
+            "name": "Reservations",
+            "item": [
+                {
+                    "name": "Book Seats",
+                    "request": {
+                        "auth": {
+                            "type": "bearer",
+                            "bearer": [
+                                {
+                                    "key": "token",
+                                    "value": "{{user_token}}",
+                                    "type": "string"
+                                }
+                            ]
+                        },
+                        "method": "POST",
+                        "header": [
+                            {
+                                "key": "Content-Type",
+                                "value": "application/json"
+                            }
+                        ],
+                        "body": {
+                            "mode": "raw",
+                            "raw": "{\n    \"showtime_id\": 1,\n    \"seat_ids\": [1, 2, 3]\n}"
+                        },
+                        "url": {
+                            "raw": "http://localhost:5000/api/reservations",
+                            "protocol": "http",
+                            "host": [
+                                "localhost"
+                            ],
+                            "port": "5000",
+                            "path": [
+                                "api",
+                                "reservations"
+                            ]
+                        }
+                    },
+                    "response": []
+                },
+                {
+                    "name": "Get Booked Seats",
+                    "request": {
+                        "method": "GET",
+                        "header": [],
+                        "url": {
+                            "raw": "http://localhost:5000/api/reservations/showtime/1/booked-seats",
+                            "protocol": "http",
+                            "host": [
+                                "localhost"
+                            ],
+                            "port": "5000",
+                            "path": [
+                                "api",
+                                "reservations",
+                                "showtime",
+                                "1",
+                                "booked-seats"
+                            ]
+                        }
+                    },
+                    "response": []
+                },
+                {
+                    "name": "My Reservations",
+                    "request": {
+                        "auth": {
+                            "type": "bearer",
+                            "bearer": [
+                                {
+                                    "key": "token",
+                                    "value": "{{user_token}}",
+                                    "type": "string"
+                                }
+                            ]
+                        },
+                        "method": "GET",
+                        "header": [],
+                        "url": {
+                            "raw": "http://localhost:5000/api/reservations",
+                            "protocol": "http",
+                            "host": [
+                                "localhost"
+                            ],
+                            "port": "5000",
+                            "path": [
+                                "api",
+                                "reservations"
+                            ]
+                        }
+                    },
+                    "response": []
+                }
+            ]
+        }
+    ]
+}
